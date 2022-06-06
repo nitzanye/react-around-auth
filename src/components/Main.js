@@ -1,37 +1,19 @@
 import React from "react";
-import api from "../utils/api";
 import Card from "./Card";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function Main(props) {
   const {
+    cards,
     onEditAvatarClick,
     onEditProfileClick,
     onAddPlaceClick,
     onCardClick,
+    onCardLike,
+    onCardDeleteClick,
   } = props;
 
-  const [userData, setUserData] = React.useState({});
-  const [cards, setCards] = React.useState([]);
-
-  React.useEffect(() => {
-    api
-      .getInitialCards()
-      .then(setCards)
-      .catch((err) => console.log(`Error.....: ${err}`));
-  }, []);
-
-  React.useEffect(() => {
-    api
-      .getUserData()
-      .then((res) => {
-        setUserData({
-          userName: res.name,
-          userDescription: res.about,
-          userAvatar: res.avatar,
-        });
-      })
-      .catch((err) => console.log(`Error.....: ${err}`));
-  }, []);
+  const currentUser = React.useContext(CurrentUserContext);
 
   return (
     <main className="content">
@@ -39,7 +21,7 @@ function Main(props) {
         <div className="profile__image-container">
           <img
             className="profile__image"
-            src={userData.userAvatar}
+            src={currentUser.avatar}
             alt="profile image"
           />
           <button
@@ -51,14 +33,14 @@ function Main(props) {
 
         <div className="profile__info">
           <div className="profile__wrapper-name">
-            <h1 className="profile__name">{userData.userName}</h1>
+            <h1 className="profile__name">{currentUser.name}</h1>
             <button
               type="button"
               className="button button_type_edit"
               onClick={onEditProfileClick}
             ></button>
           </div>
-          <p className="profile__job">{userData.userDescription}</p>
+          <p className="profile__job">{currentUser.about}</p>
         </div>
         <button
           type="button"
@@ -70,7 +52,13 @@ function Main(props) {
       <section className="cards">
         <ul className="cards__list">
           {cards.map((card) => (
-            <Card key={card._id} card={card} onCardClick={onCardClick} />
+            <Card
+              key={card._id}
+              card={card}
+              onCardClick={onCardClick}
+              onCardLike={onCardLike}
+              onCardDeleteClick={onCardDeleteClick}
+            />
           ))}
         </ul>
       </section>

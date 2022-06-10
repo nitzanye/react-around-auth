@@ -66,3 +66,21 @@
 /* import footer classes */
 @import url(./blocks/footer/footer.css);
 @import url(./blocks/footer/__copyright/footer__copyright.css);
+
+/* import form classes */
+@import url(./blocks/form/form.css);
+@import url(./blocks/form/__error/form__error.css);
+@import url(./blocks/form/__error/_visible/form__error_visible.css);
+@import url(./blocks/form/__input/form__input.css);
+@import url(./blocks/form/__input/_type/form__input_type_error.css);
+@import url(./blocks/form/__link/form__link.css);
+@import url(./blocks/form/__submit/form__submit.css);
+@import url(./blocks/form/__submit/form__submit-disable.css);
+@import url(./blocks/form/__title/form__title.css);
+
+
+/* import auth-form */
+@import url(./blocks/auth/auth.css);
+@import url(./blocks/auth/auth-form.css);
+
+/* import tooltip classes */

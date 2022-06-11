@@ -2,7 +2,14 @@
 // import successImage from '../images/successImage.svg';
 // import failImage from '../images/failImage.svg';
 
-// const InfoTooltip = ({ name, isOpen, onClose, isSuccess}) => {
+// const InfoTooltip = ({ 
+//     name, 
+//     isOpen, 
+//     onClose, 
+//     isSuccess
+// }) => {
+
+
 //     return (
 //         <div className={`popup popup_type_${name} ${isOpen && 'popup_opened'}`} >
 //           <div className="popup__window">

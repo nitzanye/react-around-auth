@@ -4,8 +4,9 @@
     line-height: 1.2;
     color: rgba(255, 255, 255, 1);
     padding: 0;
-    margin: 15px 0 80px;
+    margin: 15px auto 80px;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .form__link:hover {
@@ -15,6 +16,6 @@
 @media screen and (max-width: 320px) {
     .form__link {
         font-size: 12px;
-        margin: 20px 30px 42px;
+        margin: 20px auto 42px;
     }
 }

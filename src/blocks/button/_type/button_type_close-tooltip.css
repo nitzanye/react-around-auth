@@ -1,0 +1,14 @@
+.button_type_close-tooltip {
+    top: -40px;
+    right: -40px;
+}
+
+@media screen and (max-width: 768px) {
+    .button_type_close-tooltip {
+      /* right: -30px;
+      top: 20px; */
+      width: 30px;
+      height: 30px;
+    }
+  }
+  

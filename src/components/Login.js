@@ -46,9 +46,9 @@ const Login = (props) => {
 
     return (
         <section className="auth-form">
-          <p className="login__welcome">
+          {/* <p className="login__welcome">
             Log in
-          </p>
+          </p> */}
           <p className="login__error">
               {message}
           </p>
@@ -56,7 +56,7 @@ const Login = (props) => {
             name="login"
             title="Log in"
             btnLable={(isDataLoding) ? 'Logging in' : 'Log in'}
-            linkPath="signin"
+            linkPath="/signup"
             linkText="Not a member yet? Sign up here!"
             onSubmit={handleSubmit}>
 

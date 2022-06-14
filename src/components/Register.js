@@ -1,27 +1,49 @@
 import React from 'react';
-import { useState } from 'react';
-import * as auth from '../utils/auth';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+// import * as auth from '../utils/auth';
+// import { useNavigate } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import Form from './Form';
 
 const Register = (props) => {
-  const { onSubmit, isDataLoding } = props;
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { isDataLoding, onSubmit } = props;
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
 
-  // const [message, SetMessage] = useState('');
+  const [isEmailValid, setIsEmailValid] = React.useState(true);
+  const [isPasswordValid, setIsPasswordValid] = React.useState(true);
+  const [errorMessage, setErrorMessage] = React.useState('');
+ 
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
+
+  const handleChangeEmail = (e) => {
+    const { value, validity, validationMessage } = e.target;
+    setEmail(value);
+    setIsEmailValid(validity.valid);
+    !validity.valid && setErrorMessage(validationMessage);
+  };
+
+  const handleChangePassword = (e) => {
+    const { value, validity, validationMessage } = e.target;
+    setPassword(value);
+    setIsPasswordValid(validity.valid);
+    !validity.valid && setErrorMessage(validationMessage);
+  };
+
+  const formRef = React.useRef();
+  
   const handleSubmit = (e) => {
     e.preventDefault();
+    if(!formRef.current.checkValidity()) {
+      formRef.current.reportValidity();
+      return;
+    }
     onSubmit(password, email);
   };
 
   return (
     <section className='auth-form'>
-      {/* <p className='register__welcome'>Sign up</p> */}
       <Form
         name='register'
         title='Sign up'
@@ -31,34 +53,40 @@ const Register = (props) => {
         onSubmit={handleSubmit}
       >
         <input
-          // className={`form__input ${!isValid && 'form__input_type_error'}`}
-          className='form__input'
+          className={`form__input ${!isEmailValid && 'form__input_type_error'}`}
           type='email'
           id='email'
           name='email'
           placeholder='Email'
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={handleChangeEmail}
           required
         />
-        {/* <span id="email-error" className={`form__error ${!isValid && 'form__error_visible'}`}>
-              {errorMessage}
-            </span> */}
+       <span
+          id='email-input-error'
+          className={`form__error ${!isEmailValid && 'form__error_visible'}`}
+        >
+          {errorMessage}
+        </span>
 
         <input
-          // className={`form__input ${!isValid && 'form__input_type_error'}`}
-          className='form__input'
+          className={`form__input ${
+            !isPasswordValid && 'form__input_type_error'
+          }`}
           type='password'
           id='password'
           name='password'
           placeholder='Password'
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={handleChangePassword}
           required
         />
-        {/* <span id="password-error" className={`form__error ${!isValid && 'form__error_visible'}`}>
-              {errorMessage}
-            </span> */}
+        <span
+          id='password-input-error'
+          className={`form__error ${!isPasswordValid && 'form__error_visible'}`}
+        >
+          {errorMessage}
+        </span>
       </Form>
     </section>
   );

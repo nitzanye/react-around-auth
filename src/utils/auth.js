@@ -15,27 +15,27 @@ export const register = (password, email) => {
       })
       .then(handleResponse); 
 }
-    export const authorize = (identifier, password) => {
+    export const authorize = (password, email) => {
       return fetch(`${BASE_URL}/signin`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({identifier, password})
+        body: JSON.stringify({password, email})
       })
-      .then((response => response.json()))
-      .then((data) => {
-        if (data.jwt) {
-          localStorage.setItem('jwt', data.jwt);
-          return data;
-        }
-      })
-      .catch(err => console.log(err))
-    };
+      .then(handleResponse);
+    }
+      // .then((response => response.json()))
+      // .then((data) => {
+      //   if (data.jwt) {
+      //     localStorage.setItem('jwt', data.jwt);
+      //     return data;
+      //   }
+      // })
+ 
 
-
-    export const checkToken = (token) => {
+    export const checkUserToken = (token) => {
       return fetch(`${BASE_URL}/users/me`, {
         method: 'GET',
         headers: {
@@ -48,8 +48,30 @@ export const register = (password, email) => {
     }
 
 
+
+    // export const authorize = (identifier, password) => {
+    //   return fetch(`${BASE_URL}/signin`, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Accept': 'application/json',
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({identifier, password})
+    //   })
+    //   .then((response => response.json()))
+    //   .then((data) => {
+    //     if (data.jwt) {
+    //       localStorage.setItem('jwt', data.jwt);
+    //       return data;
+    //     }
+    //   })
+    //   .catch(err => console.log(err))
+    // };
+
+
+
 // //getUser / getToken
-// export const checkToken = (token) => {
+// export const checkUserToken = (token) => {
 //     return fetch(`${BASE_URL}/users/me`, {
 //       method: 'GET',
 //       headers: {

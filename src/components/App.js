@@ -18,49 +18,33 @@ import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import ConfirmDeletePopup from './ConfirmDeletePopup';
 
-function App() {
+const App = () => {
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
+    React.useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
+    React.useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+
+  const [isPreviewPlacePopupOpen, setIsPreviewPlacePopupOpen] =
+    React.useState(false);
+
+  const [isConfirmDeletePopupOpen, setIsConfirmDeletePopupOpen] =
+    React.useState(false);
+
+  const [isDataLoading, setIsDataLoading] = React.useState(false);
+
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
+  const [isSuccess, setIsSuccess] = React.useState(true);
+
+  const [cards, setCards] = React.useState([]);
+  const [selectedCard, setSelectedCard] = React.useState(null);
+  const [selectedToDeleteCard, setSelectedToDeletecard] = React.useState(null);
+
   const [currentUser, setcurrentUser] = React.useState({});
+  const [userEmail, setuserEmail] = React.useState('');
   const [loggedIn, setLoggedIn] = React.useState(false);
-  const [userData, setUserData] = React.useState(null);
+
   const navigate = useNavigate();
-
-  const handleLogin = (userData) => {
-    setLoggedIn(true);
-    setUserData(userData);
-  };
-
-  React.useEffect(() => {
-    const jwt = localStorage.getItem('jwt');
-    if (jwt) {
-      auth
-        .checkToken(jwt)
-        .then((res) => {
-          if (res) {
-            const userData = {
-              email: res.email,
-            };
-            setLoggedIn(true);
-            setUserData(userData);
-          }
-        })
-        .catch((err) => console.log(`Error.....: ${err}`));
-    }
-  }, []);
-
-  // React.useEffect(() => {
-  //   if (loggedIn) {
-  //     navigate('/');
-  //   } else {
-  //     navigate('/signin');
-  //   }
-  // }, [loggedIn, navigate]);
-
-  const handleLogout = () => {
-    localStorage.removeItem('jwt');
-    navigate('/signin');
-    setLoggedIn(false);
-    setUserData('');
-  };
 
   React.useEffect(() => {
     api
@@ -90,33 +74,36 @@ function App() {
       .catch((err) => console.log(`Error.....: ${err}`));
   };
 
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
-    React.useState(false);
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
-    React.useState(false);
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+  React.useEffect(() => {
+    const jwt = localStorage.getItem('token');
+    if (jwt) {
+      auth
+        .checkUserToken(jwt)
+        .then((res) => {
+          // const userData = {
+          //   email: res.email,
+          // };
+          setuserEmail(res.data.email);
+          setLoggedIn(true);
+        })
+        .catch((err) => console.log(`Error.....: ${err}`));
+    }
+  }, []);
 
-  const [isPreviewPlacePopupOpen, setIsPreviewPlacePopupOpen] =
-    React.useState(false);
+  React.useEffect(() => {
+    if (loggedIn) {
+      navigate('/');
+    } else {
+      navigate('/signin');
+    }
+  }, [navigate, loggedIn]);
 
-  const [isConfirmDeletePopupOpen, setIsConfirmDeletePopupOpen] =
-    React.useState(false);
-
-  const [isDataLoading, setIsDataLoading] = React.useState(false);
-
-  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
-  const [isSuccess, setIsSuccess] = React.useState(true);
-  // // const [infoTooltipText, setInfoTooltipText] = React.useState('');
-
-  // const handleUpdateInfoTooltip = () => {
-  //   setIsSuccess();
-  //   // setInfoTooltipText();
-  //   setIsInfoTooltipOpen(true);
-  // };
-
-  const [cards, setCards] = React.useState([]);
-  const [selectedCard, setSelectedCard] = React.useState(null);
-  const [selectedToDeleteCard, setSelectedToDeletecard] = React.useState(null);
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/signin');
+    setLoggedIn(false);
+    setuserEmail('');
+  };
 
   const handleEditAvatarClick = () => setIsEditAvatarPopupOpen(true);
   const handleEditProfileClick = () => setIsEditProfilePopupOpen(true);
@@ -203,34 +190,6 @@ function App() {
     }
   };
 
-  const handleUserRegister = (password, email) => {
-    setIsDataLoading(true);
-    // Set button to loading...
-    if (!email || !password) {
-      return;
-    }
-    auth
-      .register(password, email)
-      .then(() => {
-        setIsSuccess(true);
-        // open OK authentication Tooltip
-        navigate('/signin');
-      })
-      .catch((err) => {
-        console.log(err);
-        setIsSuccess(false);
-        // open NOT OK authentication Tooltip
-      })
-      .finally(() => {
-        setIsDataLoading(false);
-        setIsInfoTooltipOpen(true);
-      })
-
-    // .finally(() => {
-    //   // re-set button to Register.
-    // });
-  };
-
   React.useEffect(() => {
     document.addEventListener('click', handleClickOutside);
     document.addEventListener('keydown', handleEscape);
@@ -241,41 +200,104 @@ function App() {
     };
   }, [isAddPlacePopupOpen]);
 
+  const handleUserRegister = (password, email) => {
+    setIsDataLoading(true);
+
+    if (!email || !password) {
+      return;
+    }
+    auth
+      .register(password, email)
+      .then(() => {
+        setIsSuccess(true);
+        navigate('/signin');
+      })
+      .catch((err) => {
+        console.log(`Error.....: ${err}`);
+        setIsSuccess(false);
+      })
+      .finally(() => {
+        setIsDataLoading(false);
+        setIsInfoTooltipOpen(true);
+      });
+  };
+
+  const handleUserLogin = (password, email) => {
+    setIsDataLoading(true);
+    if (!email || !password) {
+      return;
+    }
+    auth
+      .authorize(password, email)
+      .then((data) => {
+        if (data.jwt) {
+          localStorage.setItem('jwt', data.jwt);
+          return data;
+        }
+      })
+      .catch((err) => console.log(`Error.....: ${err}`))
+      .finally(() => {
+        setIsDataLoading(false);
+      });
+  };
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className='page'>
-        <Header
-        // loggedIn={loggedIn}
-        // linkText={'Log out'}
-        // userData={userData}
-        // onLogout={handleLogout}
-        />
         <Routes>
           <Route
             path='/signin'
-            element={<Login loggedIn={loggedIn} handleLogin={handleLogin} />}
+            element={
+              <>
+                <Header
+                  loggedIn={loggedIn}
+                  linkText='Sign up'
+                  linkPath='/signup'
+                  // userEmail={userEmail}
+                />
+                <Login
+                  onSubmit={handleUserLogin}
+                  loggedIn={loggedIn}
+                  // handleLogin={handleLogin}
+                />
+              </>
+            }
           />
-          {/* <Header loggedIn={loggedIn} linkText={'Sign up'} linkPath={'/signout'} /> */}
           <Route
             path='/signup'
             element={
-              <Register
-                onSubmit={handleUserRegister}
-                loggedIn={loggedIn}
-                handleLogin={handleLogin}
-              />
+              <>
+                <Header
+                  loggedIn={loggedIn}
+                  linkText='Log in'
+                  linkPath='/signin'
+                  // userEmail={userEmail}
+                />
+                <Register
+                  onSubmit={handleUserRegister}
+                  loggedIn={loggedIn}
+
+                  // handleLogin={handleLogin}
+                />
+              </>
             }
           />
-          {/* <Header  loggedIn={loggedIn}  linkText={'Log in'} linkPath={'/signin'} /> */}
           <Route
             path='/'
             element={
               <ProtectedRoute
                 exact
-                redirectPath='/signin'
+                redirectPath='/'
                 loggedIn={loggedIn}
-                userData={userData}
+                // userEmail={userEmail}
               >
+                <Header
+                  loggedIn={loggedIn}
+                  linkText='Log out'
+                  userEmail={userEmail}
+                  handleLogout={handleLogout}
+                />
+
                 <Main
                   onEditProfileClick={handleEditProfileClick}
                   onAddPlaceClick={handleAddPlaceClick}
@@ -335,6 +357,6 @@ function App() {
       </div>
     </CurrentUserContext.Provider>
   );
-}
+};
 
 export default App;

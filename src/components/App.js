@@ -230,8 +230,11 @@ const App = () => {
     auth
       .authorize(password, email)
       .then((data) => {
-        if (data.jwt) {
-          localStorage.setItem('jwt', data.jwt);
+        if (data.token) {
+          localStorage.setItem('jwt', data.token);
+          console.log(data);
+          setLoggedIn(true);
+          navigate('/');
           return data;
         }
       })

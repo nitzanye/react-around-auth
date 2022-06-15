@@ -31,14 +31,14 @@ const Register = (props) => {
     !validity.valid && setErrorMessage(validationMessage);
   };
 
-  const formRef = React.useRef();
+  // const formRef = React.useRef();
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(!formRef.current.checkValidity()) {
-      formRef.current.reportValidity();
-      return;
-    }
+    // if(!formRef.current.checkValidity()) {
+    //   formRef.current.reportValidity();
+    //   return;
+    // }
     onSubmit(password, email);
   };
 

@@ -21,7 +21,9 @@
 @media screen and (max-width: 768px) {
     .button_type_close-tooltip {
       top: -50px;
-      right: 40%; 
+      right: 45%; 
+      width: 30px;
+      height: 30px;
     }
   }
   

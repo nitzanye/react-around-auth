@@ -287,7 +287,7 @@ const App = () => {
             element={
               <ProtectedRoute
                 exact
-                redirectPath='/'
+                redirectPath='/signin'
                 loggedIn={loggedIn}
                 // userEmail={userEmail}
               >

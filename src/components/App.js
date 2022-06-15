@@ -6,7 +6,6 @@ import ProtectedRoute from '../components/ProtectedRoute';
 import * as auth from '../utils/auth';
 import { useNavigate } from 'react-router-dom';
 import InfoTooltip from './InfoTooltip';
-
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import Header from './Header';
 import Main from './Main';
@@ -32,14 +31,11 @@ const App = () => {
     React.useState(false);
 
   const [isDataLoading, setIsDataLoading] = React.useState(false);
-
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
   const [isSuccess, setIsSuccess] = React.useState(true);
-
   const [cards, setCards] = React.useState([]);
   const [selectedCard, setSelectedCard] = React.useState(null);
   const [selectedToDeleteCard, setSelectedToDeletecard] = React.useState(null);
-
   const [currentUser, setcurrentUser] = React.useState({});
   const [userEmail, setuserEmail] = React.useState('');
   const [loggedIn, setLoggedIn] = React.useState(false);
@@ -75,28 +71,18 @@ const App = () => {
   };
 
   React.useEffect(() => {
-    const jwt = localStorage.getItem('token');
+    const jwt = localStorage.getItem('jwt');
     if (jwt) {
       auth
         .checkUserToken(jwt)
         .then((res) => {
-          // const userData = {
-          //   email: res.email,
-          // };
           setuserEmail(res.data.email);
           setLoggedIn(true);
+          navigate('/');
         })
         .catch((err) => console.log(`Error.....: ${err}`));
     }
   }, []);
-
-  // React.useEffect(() => {
-  //   if (loggedIn) {
-  //     navigate('/');
-  //   } else {
-  //     navigate('/signin');
-  //   }
-  // }, [navigate, loggedIn]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -232,8 +218,8 @@ const App = () => {
       .then((data) => {
         if (data.token) {
           localStorage.setItem('jwt', data.token);
-          console.log(data);
           setLoggedIn(true);
+          setuserEmail(email);
           navigate('/');
           return data;
         }
@@ -256,13 +242,8 @@ const App = () => {
                   loggedIn={loggedIn}
                   linkText='Sign up'
                   linkPath='/signup'
-                  // userEmail={userEmail}
                 />
-                <Login
-                  onSubmit={handleUserLogin}
-                  loggedIn={loggedIn}
-                  // handleLogin={handleLogin}
-                />
+                <Login onSubmit={handleUserLogin} loggedIn={loggedIn} />
               </>
             }
           />
@@ -274,29 +255,19 @@ const App = () => {
                   loggedIn={loggedIn}
                   linkText='Log in'
                   linkPath='/signin'
-                  // userEmail={userEmail}
                 />
-                <Register
-                  onSubmit={handleUserRegister}
-                  loggedIn={loggedIn}
-
-                  // handleLogin={handleLogin}
-                />
+                <Register onSubmit={handleUserRegister} loggedIn={loggedIn} />
               </>
             }
           />
           <Route
             path='/'
             element={
-              <ProtectedRoute
-                exact
-                redirectPath='/signin'
-                loggedIn={loggedIn}
-                // userEmail={userEmail}
-              >
+              <ProtectedRoute exact redirectPath='/signin' loggedIn={loggedIn}>
                 <Header
                   loggedIn={loggedIn}
                   linkText='Log out'
+                  linkPath='/signin'
                   userEmail={userEmail}
                   handleLogout={handleLogout}
                 />

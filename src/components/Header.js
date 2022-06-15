@@ -7,10 +7,10 @@ import hamburgerClose from '../images/hamburgerClose.svg';
 const Header = (props) => {
   const { loggedIn, userEmail, handleLogout, linkPath, linkText } = props;
 
-  const [isHamburgerOpen, setisHamburgerOpen] = React.useState(false);
+  const [isDropDownOpen, setisDropDownOpen] = React.useState(false);
 
   const toggleHamburger = () => {
-    setisHamburgerOpen(!isHamburgerOpen);
+    setisDropDownOpen(!isDropDownOpen);
   };
 
   const handleLogOutFromHamburger = () => {
@@ -22,7 +22,9 @@ const Header = (props) => {
     <>
       {loggedIn && (
         <div
-          className={`header__menu ${isHamburgerOpen && 'header__menu-open'}`}
+          className={
+            isDropDownOpen ? 'header__menu header__menu-open' : 'header__menu'
+          }
         >
           <p className='header__hamburger-email'>{userEmail}</p>
           <Link
@@ -57,7 +59,7 @@ const Header = (props) => {
             </nav>
             <button className='header__hamburger' onClick={toggleHamburger}>
               <img
-                src={!isHamburgerOpen ? hamburgerOpen : hamburgerClose}
+                src={!isDropDownOpen ? hamburgerOpen : hamburgerClose}
                 className='header__hamburger-icon'
                 alt=''
               />

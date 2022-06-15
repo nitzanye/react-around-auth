@@ -1,7 +1,4 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
-// import { useNavigate } from 'react-router-dom';
-// import * as auth from '../utils/auth';
 import Form from './Form';
 
 const Login = (props) => {
@@ -9,12 +6,9 @@ const Login = (props) => {
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-
   const [isEmailValid, setIsEmailValid] = React.useState(true);
   const [isPasswordValid, setIsPasswordValid] = React.useState(true);
   const [errorMessage, setErrorMessage] = React.useState('');
-
-  // const navigate = useNavigate();
 
   const handleChangeEmail = (e) => {
     const { value, validity, validationMessage } = e.target;
@@ -29,47 +23,11 @@ const Login = (props) => {
     setIsPasswordValid(validity.valid);
     !validity.valid && setErrorMessage(validationMessage);
   };
-  // const formRef = React.useRef();
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // if(!formRef.current.checkValidity()) {
-    //   formRef.current.reportValidity();
-    //   return;
-    // }
     onSubmit(password, email);
   };
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   onSubmit(password, email);
-  // };
-
-  // const resetForm = () => {
-  //   //  SetMessage('');
-  //    setEmail('');
-  //    setPassword('');
-  // }
-
-  // const handleSubmit = (e) => {
-  //     e.preventDefault();
-  //     if (!email || !password) {
-  //         return;
-  //     }
-  //     auth
-  //         .authorize(email, password)
-  //          .then((data) => {
-  //              if (!data) {
-  //                 SetMessage('Something went wrong , please try again');
-  //              }
-  //              if (data.jwt) {
-  //                  resetForm();
-  //                  props.handleLogin(data.user);
-  //                  navigate('/');
-  //                  return;
-  //              }
-  //          }
-  //     ).catch(err => console.log(err));
-  // }
 
   return (
     <section className='auth-form'>
@@ -116,15 +74,6 @@ const Login = (props) => {
         >
           {errorMessage}
         </span>
-        {/* <button
-          type='submit'
-          className='form__submit'
-          // className={`form__submit ${!isFormValid && `form__submit-disabled`}`}
-          // type='submit'
-          // aria-label={`${btnLable} ${name}`}
-        >
-          {btnLable}
-        </button> */}
       </Form>
     </section>
   );

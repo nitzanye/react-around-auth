@@ -1,7 +1,4 @@
 import React from 'react';
-// import * as auth from '../utils/auth';
-// import { useNavigate } from 'react-router-dom';
-// import { Link } from 'react-router-dom';
 import Form from './Form';
 
 const Register = (props) => {
@@ -12,10 +9,6 @@ const Register = (props) => {
   const [isEmailValid, setIsEmailValid] = React.useState(true);
   const [isPasswordValid, setIsPasswordValid] = React.useState(true);
   const [errorMessage, setErrorMessage] = React.useState('');
- 
-
-  // const navigate = useNavigate();
-
 
   const handleChangeEmail = (e) => {
     const { value, validity, validationMessage } = e.target;
@@ -31,14 +24,8 @@ const Register = (props) => {
     !validity.valid && setErrorMessage(validationMessage);
   };
 
-  // const formRef = React.useRef();
-  
   const handleSubmit = (e) => {
     e.preventDefault();
-    // if(!formRef.current.checkValidity()) {
-    //   formRef.current.reportValidity();
-    //   return;
-    // }
     onSubmit(password, email);
   };
 
@@ -62,7 +49,7 @@ const Register = (props) => {
           onChange={handleChangeEmail}
           required
         />
-       <span
+        <span
           id='email-input-error'
           className={`form__error ${!isEmailValid && 'form__error_visible'}`}
         >

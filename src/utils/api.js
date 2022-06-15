@@ -62,20 +62,6 @@ class Api {
       headers: this._headers,
     }).then(this._checkResStatus);
   };
-
-  // likeCard = (cardId) => {
-  //   return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
-  //     method: "PUT",
-  //     headers: this._headers,
-  //   }).then(this._checkResStatus);
-  // };
-
-  // unLikeCard = (cardId) => {
-  //   return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
-  //     method: "DELETE",
-  //     headers: this._headers,
-  //   }).then(this._checkResStatus);
-  // };
 }
 
 export default new Api({

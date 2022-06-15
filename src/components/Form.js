@@ -6,15 +6,6 @@ const Form = (props) => {
     props;
 
   const formRef = React.useRef();
-  // const [isFormValid, setIsFormValid] = React.useState(false);
-
-  // const handleChange = () => {
-  //   setIsFormValid(formRef.current.checkValdity());
-  // };
-
-  // React.useEffect(() => {
-  //     validOnOpen && setIsFormValid(true);
-  // }, []);
 
   return (
     <form
@@ -27,12 +18,7 @@ const Form = (props) => {
       <h2 className='form__title'>{title}</h2>
 
       {children}
-      <button
-        type='submit'
-        className='form__submit'
-        // className={`form__submit ${!isFormValid && `form__submit-disabled`}`}
-        // aria-label={`${btnLable} ${name}`}
-      >
+      <button type='submit' className='form__submit'>
         {btnLable}
       </button>
       <Link to={linkPath} className='form__link'>

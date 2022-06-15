@@ -90,13 +90,13 @@ const App = () => {
     }
   }, []);
 
-  React.useEffect(() => {
-    if (loggedIn) {
-      navigate('/');
-    } else {
-      navigate('/signin');
-    }
-  }, [navigate, loggedIn]);
+  // React.useEffect(() => {
+  //   if (loggedIn) {
+  //     navigate('/');
+  //   } else {
+  //     navigate('/signin');
+  //   }
+  // }, [navigate, loggedIn]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');

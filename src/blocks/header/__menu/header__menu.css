@@ -1,18 +1,7 @@
 .header__menu {
-  display: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  padding: 0;
 }
-
-@media screen and (max-width) {
-  .header__menu {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 0;
-    box-sizing: border-box;
-    color: black;
-    opacity: 0;
-  }
-}
-
-

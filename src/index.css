@@ -27,16 +27,21 @@
 
 /* import header classes */
 @import url(./blocks/header/header.css);
+@import url(./blocks/header/__content/header__content.css);
 @import url(./blocks/header/__email/header__email.css);
 @import url(./blocks/header/__link/header__link.css);
 @import url(./blocks/header/__menu/header__menu.css);
 @import url(./blocks/header/__menu/header__menu-container.css);
-@import url(./blocks/header/__menu/header__menu-content.css);
 @import url(./blocks/header/__menu/header__menu-open.css);
 @import url(./blocks/header/__hamburger/header__hamburger.css);
+@import url(./blocks/header/__hamburger/__hamburger-menu/header__hamburger-menu.css);
+@import url(./blocks/header/__hamburger/__hamburger-menu/_visible/header__hamburger-menu_visible.css);
+@import url(./blocks/header/__hamburger/__hamburger-menu/header__hamburger-menu-container.css);
+@import url(./blocks/header/__hamburger/__hamburger-menu/header__hamburger-menu-item.css);
 @import url(./blocks/header/__hamburger/header__hamburger-email.css);
 @import url(./blocks/header/__hamburger/heaer__hamburger-link.css);
 @import url(./blocks/header/__hamburger/header__hamburger-icon.css);
+@import url(./blocks/header/__hamburger/header__hamburger-close.css);
 
 @import url(./blocks/logo/logo.css);
 @import url(./blocks/logo/__image/logo__image.css);

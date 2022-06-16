@@ -36,8 +36,8 @@ const App = () => {
   const [cards, setCards] = React.useState([]);
   const [selectedCard, setSelectedCard] = React.useState(null);
   const [selectedToDeleteCard, setSelectedToDeletecard] = React.useState(null);
-  const [currentUser, setcurrentUser] = React.useState({});
-  const [userEmail, setuserEmail] = React.useState('');
+  const [currentUser, setCurrentUser] = React.useState({});
+  const [userEmail, setUserEmail] = React.useState('');
   const [loggedIn, setLoggedIn] = React.useState(false);
 
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ const App = () => {
   React.useEffect(() => {
     api
       .getUserData()
-      .then((res) => setcurrentUser(res))
+      .then((res) => setCurrentUser(res))
       .catch((err) => console.log(`Error.....: ${err}`));
   }, []);
 
@@ -76,7 +76,7 @@ const App = () => {
       auth
         .checkUserToken(jwt)
         .then((res) => {
-          setuserEmail(res.data.email);
+          setUserEmail(res.data.email);
           setLoggedIn(true);
           navigate('/');
         })
@@ -88,7 +88,7 @@ const App = () => {
     localStorage.removeItem('token');
     navigate('/signin');
     setLoggedIn(false);
-    setuserEmail('');
+    setUserEmail('');
   };
 
   const handleEditAvatarClick = () => setIsEditAvatarPopupOpen(true);
@@ -110,7 +110,7 @@ const App = () => {
     api
       .updateUserInfo(user)
       .then((res) => {
-        setcurrentUser(res);
+        setCurrentUser(res);
         closeAllPopups();
       })
       .catch((err) => console.log(`Error.....: ${err}`))
@@ -122,7 +122,7 @@ const App = () => {
     api
       .updateUserAvatar(newAvatarLink)
       .then((updateUserInfo) => {
-        setcurrentUser(updateUserInfo);
+        setCurrentUser(updateUserInfo);
         closeAllPopups();
       })
       .catch((err) => console.log(`Error.....: ${err}`))
@@ -164,19 +164,19 @@ const App = () => {
     setIsInfoTooltipOpen(false);
   };
 
-  const handleEscape = (evt) => {
-    if (evt.key === 'Escape') {
-      closeAllPopups();
-    }
-  };
-
-  const handleClickOutside = (evt) => {
-    if (evt.target.classList.contains('popup_opened')) {
-      closeAllPopups();
-    }
-  };
-
   React.useEffect(() => {
+    const handleClickOutside = (evt) => {
+      if (evt.target.classList.contains('popup_opened')) {
+        closeAllPopups();
+      }
+    };
+
+    const handleEscape = (evt) => {
+      if (evt.key === 'Escape') {
+        closeAllPopups();
+      }
+    };
+
     document.addEventListener('click', handleClickOutside);
     document.addEventListener('keydown', handleEscape);
 
@@ -184,7 +184,7 @@ const App = () => {
       document.removeEventListener('click', handleClickOutside);
       document.removeEventListener('keydown', handleEscape);
     };
-  }, [isAddPlacePopupOpen]);
+  }, []);
 
   const handleUserRegister = (password, email) => {
     setIsDataLoading(true);
@@ -219,7 +219,7 @@ const App = () => {
         if (data.token) {
           localStorage.setItem('jwt', data.token);
           setLoggedIn(true);
-          setuserEmail(email);
+          setUserEmail(email);
           navigate('/');
           return data;
         }

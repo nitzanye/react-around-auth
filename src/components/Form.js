@@ -5,13 +5,10 @@ const Form = (props) => {
   const { name, title, linkPath, linkText, onSubmit, btnLable, children } =
     props;
 
-  const formRef = React.useRef();
-
   return (
     <form
       className='form'
       name={name}
-      ref={formRef}
       onSubmit={onSubmit}
       noValidate
     >

@@ -29,7 +29,7 @@ const ConfirmDeletePopup = ({
       validOnOpen={handleClick}
       onClose={onClose}
       onSubmit={handleSubmit}
-    ></PopupWithForm>
+    />
   );
 };
 

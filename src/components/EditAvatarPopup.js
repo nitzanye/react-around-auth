@@ -9,6 +9,7 @@ const EditAvatarPopup = ({
 }) => {
   const [isAvatarLinkValid, setIsAvatarLinkValid] = React.useState(true);
   const [errorMessage, setErrorMessage] = React.useState("");
+  const avatarRef = React.useRef();
 
   React.useEffect(() => {
     setIsAvatarLinkValid(true);
@@ -21,8 +22,6 @@ const EditAvatarPopup = ({
     setIsAvatarLinkValid(validity.valid);
     !validity.valid && setErrorMessage(validationMessage);
   };
-
-  const avatarRef = React.useRef();
 
   const handleSubmit = (e) => {
     e.preventDefault();

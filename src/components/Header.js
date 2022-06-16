@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../images/logo.svg';
+import { useWindowDimensions } from '../hooks/useWindowDimensions';
 
 const Header = (props) => {
   const { loggedIn, userEmail, handleLogout, linkPath, linkText } = props;
-
-  const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
+  const windowWidth = useWindowDimensions();
   const [isDropDownOpen, setisDropDownOpen] = React.useState(false);
 
   const toggleHamburger = () => setisDropDownOpen(!isDropDownOpen);
@@ -15,21 +15,7 @@ const Header = (props) => {
     setisDropDownOpen(false);
   }, [setisDropDownOpen]);
 
-  React.useEffect(() => {
-    let timeoutId = null;
-    const handleResize = () => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        setWindowWidth(window.innerWidth);
-      }, 150);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  });
-
-  const setHeader = () => {
+  const renderHeader = () => {
     if (!loggedIn) {
       return (
         <nav className='header__menu'>
@@ -104,7 +90,7 @@ const Header = (props) => {
         id='logo'
         alt='Around the U.S.'
       />
-      <div className='header__content'>{setHeader()}</div>
+      <div className='header__content'>{renderHeader()}</div>
     </header>
   );
 };

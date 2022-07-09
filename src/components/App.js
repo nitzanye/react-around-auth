@@ -43,21 +43,23 @@ const App = () => {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    api
-      .getUserData()
-      .then((res) => setCurrentUser(res))
-      .catch((err) => console.log(`Error.....: ${err}`));
-  }, []);
+    loggedIn &&
+      api
+        .getUserData()
+        .then((res) => setCurrentUser(res))
+        .catch((err) => console.log(`Error.....: ${err}`));
+  }, [loggedIn]);
 
   React.useEffect(() => {
-    api
-      .getInitialCards()
-      .then(setCards)
-      .catch((err) => console.log(`Error.....: ${err}`));
-  }, []);
+    loggedIn &&
+      api
+        .getInitialCards()
+        .then(setCards)
+        .catch((err) => console.log(`Error.....: ${err}`));
+  }, [loggedIn]);
 
   const handleCardLike = (card) => {
-    const isLiked = card.likes.some((user) => user._id === currentUser._id);
+    const isLiked = card.likes.some((user) => user === currentUser._id);
     api
       .changeLikeCardStatus(card._id, isLiked)
       .then((newCard) => {
@@ -71,18 +73,18 @@ const App = () => {
   };
 
   React.useEffect(() => {
-    const jwt = localStorage.getItem('jwt');
-    if (jwt) {
+    const token = localStorage.getItem('token');
+    if (token) {
       auth
-        .checkUserToken(jwt)
+        .checkUserToken(token)
         .then((res) => {
-          setUserEmail(res.data.email);
+          setUserEmail(res.email);
           setLoggedIn(true);
           navigate('/');
         })
         .catch((err) => console.log(`Error.....: ${err}`));
     }
-  }, []);
+  }, [loggedIn]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -186,14 +188,14 @@ const App = () => {
     };
   }, []);
 
-  const handleUserRegister = (password, email) => {
+  const handleUserRegister = (email, password) => {
     setIsDataLoading(true);
 
     if (!email || !password) {
       return;
     }
     auth
-      .register(password, email)
+      .register(email, password)
       .then(() => {
         setIsSuccess(true);
         navigate('/signin');
@@ -208,16 +210,17 @@ const App = () => {
       });
   };
 
-  const handleUserLogin = (password, email) => {
+  const handleUserLogin = (email, password) => {
     setIsDataLoading(true);
     if (!email || !password) {
       return;
     }
     auth
-      .authorize(password, email)
+      .authorize(email, password)
       .then((data) => {
+        // console.log(data);
         if (data.token) {
-          localStorage.setItem('jwt', data.token);
+          localStorage.setItem('token', data.token);
           setLoggedIn(true);
           setUserEmail(email);
           navigate('/');
